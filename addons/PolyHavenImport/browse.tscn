@@ -1,0 +1,191 @@
+[gd_scene format=3 uid="uid://c6t2dcpxlp834"]
+
+[ext_resource type="Texture2D" uid="uid://ctd33ncw0hr47" path="res://addons/PolyHavenImport/logo-256.png" id="3"]
+[ext_resource type="Script" uid="uid://dsh1endayki64" path="res://addons/PolyHavenImport/browse.gd" id="4"]
+
+[node name="Browse" type="Control" unique_id=507120149]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("4")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=808581260]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1393624810]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SearchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=811565323]
+layout_mode = 2
+
+[node name="SearchInput" type="LineEdit" parent="MarginContainer/VBoxContainer/SearchContainer" unique_id=1433031222]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search"
+
+[node name="PreviewBtn" type="Button" parent="MarginContainer/VBoxContainer/SearchContainer" unique_id=728601024]
+layout_mode = 2
+text = "Preivew"
+
+[node name="SettingsBtn" type="Button" parent="MarginContainer/VBoxContainer/SearchContainer" unique_id=589604872]
+layout_mode = 2
+text = "Settings..."
+
+[node name="FilterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2128696535]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FilterContainer" unique_id=2096377359]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TypeLabel" type="Label" parent="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer" unique_id=2114801351]
+layout_mode = 2
+text = "Type:"
+
+[node name="TypesDropDown" type="OptionButton" parent="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer" unique_id=1354882072]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 4
+popup/item_0/text = "All"
+popup/item_0/id = 0
+popup/item_1/text = "Hdris"
+popup/item_1/id = 1
+popup/item_2/text = "Textures"
+popup/item_2/id = 2
+popup/item_3/text = "Models"
+popup/item_3/id = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FilterContainer" unique_id=659236125]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CategoryLabel" type="Label" parent="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer2" unique_id=1017280172]
+layout_mode = 2
+text = "Category:"
+
+[node name="CategoriesDropDown" type="OptionButton" parent="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer2" unique_id=16984172]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "All"
+popup/item_0/id = 0
+
+[node name="ContentPanel" type="Panel" parent="MarginContainer/VBoxContainer" unique_id=285724213]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Assets" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentPanel" unique_id=1060891750]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets" unique_id=1875817486]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer" unique_id=1983300303]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="TopPagesScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer/VBoxContainer" unique_id=2033883317]
+layout_mode = 2
+follow_focus = true
+vertical_scroll_mode = 0
+
+[node name="TopPagesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer/VBoxContainer/TopPagesScroll" unique_id=606401506]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer/VBoxContainer" unique_id=14505417]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 40
+columns = 2
+
+[node name="BottomPagesScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer/VBoxContainer" unique_id=266197706]
+layout_mode = 2
+follow_focus = true
+vertical_scroll_mode = 0
+
+[node name="BottomPagesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Assets/MarginContainer/VBoxContainer/BottomPagesScroll" unique_id=1526594301]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Error" type="CenterContainer" parent="MarginContainer/VBoxContainer/ContentPanel" unique_id=166322828]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentPanel/Error" unique_id=1013872851]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentPanel/Error/VBoxContainer" unique_id=735335707]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.364706, 0.364706, 1)
+text = "Error while attempting to contact API endpoint."
+
+[node name="ErrorRetryBtn" type="Button" parent="MarginContainer/VBoxContainer/ContentPanel/Error/VBoxContainer" unique_id=1429916202]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Retry"
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=694973195]
+layout_mode = 2
+
+[node name="PolyHavenLogo" type="TextureRect" parent="MarginContainer/VBoxContainer/Footer" unique_id=960538822]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="PolyHavenLabel" type="Label" parent="MarginContainer/VBoxContainer/Footer" unique_id=875824434]
+layout_mode = 2
+text = "Poly Haven - The Public 3D Asset Library"
+
+[node name="SupportBtn" type="Button" parent="MarginContainer/VBoxContainer/Footer" unique_id=1577539921]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Support Poly Haven"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/SearchContainer/SearchInput" to="." method="_on_SearchInput_text_changed"]
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/SearchContainer/SearchInput" to="." method="_on_SearchInput_text_entered"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SearchContainer/PreviewBtn" to="." method="_on_PreviewBtn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SearchContainer/SettingsBtn" to="." method="_on_SettingsBtn_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer/TypesDropDown" to="." method="_on_TypesDropDown_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/FilterContainer/HBoxContainer2/CategoriesDropDown" to="." method="_on_CategoriesDropDown_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ContentPanel/Error/VBoxContainer/ErrorRetryBtn" to="." method="_on_ErrorRetryBtn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/SupportBtn" to="." method="_on_SupportBtn_pressed"]
