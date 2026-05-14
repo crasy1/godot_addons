@@ -9,16 +9,16 @@ const Api = preload("res://addons/sketchfab/Api.gd")
 var api = Api.new()
 var downloader
 
-@onready var label_model = find_child("Model")
-@onready var label_user = find_child("User")
-@onready var image = find_child("Image")
+@onready var label_model: Label = %Model
+@onready var label_user: Label = %User
+@onready var image: TextureRect = %Image
 
-@onready var info = find_child("Info")
-@onready var license = find_child("License")
+@onready var info: Label = %Info
+@onready var license: Label = %License
 
-@onready var download = find_child("Download")
-@onready var progress = find_child("ProgressBar")
-@onready var size_label = find_child("Size")
+@onready var download: Button = %Download
+@onready var progress: ProgressBar = %ProgressBar
+@onready var size_label: Label = %Size
 
 var uid
 var imported_path
@@ -30,7 +30,7 @@ func set_uid(uid):
 	self.uid = uid
 
 func _ready():
-	$All.visible = false
+	%All.visible = false
 
 func _on_about_to_show():
 	if !uid:
@@ -54,7 +54,7 @@ func _on_about_to_show():
 		if typeof(result) != TYPE_DICTIONARY:
 			hide()
 			return
-
+		print("[assets data]",result)
 		var gtlf = SafeData.dictionary(result, "gltf")
 		if !gtlf.size():
 			OS.alert("This model has not a glTF version.", "Sorry")
@@ -89,7 +89,7 @@ func _on_about_to_show():
 	var thumbnails = SafeData.dictionary(data, "thumbnails")
 	var images = SafeData.array(thumbnails, "images")
 	image.max_size = size.x
-	$All.size = size
+	%All.size = size
 	image.url = Utils.get_best_size_url(images, image.max_size, SafeData)
 
 	var vc = SafeData.integer(data, "vertexCount")
@@ -105,17 +105,16 @@ func _on_about_to_show():
 		]
 
 	var license_data = SafeData.dictionary(data, "license")
-	print(license_data)
+	
 	license.text = "%s\n(%s)" % [
 		SafeData.string(license_data, "fullName"),
 		SafeData.string(license_data, "requirements"),
 	]
-	$All.visible = true
+	%All.visible = true
 
 func _on_Download_pressed():
 	if imported_path:
-		var ei = get_tree().get_meta("__editor_interface")
-		ei.open_scene_from_path(imported_path)
+		EditorInterface.open_scene_from_path(imported_path)
 		hide()
 		return
 
@@ -183,13 +182,12 @@ func _on_Download_pressed():
 
 	var base_name = filename.substr(0, filename.find(".zip"))
 	imported_path = "res://sketchfab/%s/scene.gltf" % base_name
-	var ei = get_tree().get_meta("__editor_interface")
-	ei.get_resource_filesystem().scan()
-	while ei.get_resource_filesystem().is_scanning():
+	EditorInterface.get_resource_filesystem().scan()
+	while EditorInterface.get_resource_filesystem().is_scanning():
 		await get_tree().process_frame
 		if !get_tree():
 			return
-	ei.select_file(imported_path)
+	EditorInterface.select_file(imported_path)
 
 	progress.visible = false
 	size_label.visible = false

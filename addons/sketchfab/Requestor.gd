@@ -72,7 +72,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 			print("CANCEL HONORED (SOFT)")
 		canceled = false
 		busy = false
-		emit_signal("completed", null)
+		completed.emit(null)
 		return
 
 	var reconnect_tries = 3
@@ -94,7 +94,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 					HTTPClient.STATUS_CANT_RESOLVE,
 				]:
 					busy = false
-					emit_signal("completed", Result.new(-1))
+					completed.emit(Result.new(-1))
 					return
 
 				if status == HTTPClient.STATUS_CONNECTED:
@@ -105,7 +105,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 				print("CANCEL HONORED (SOFT)")
 			canceled = false
 			busy = false
-			emit_signal("completed", null)
+			completed.emit(null)
 			return
 
 		var uri = path
@@ -171,7 +171,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 			http.close()
 			canceled = false
 			busy = false
-			emit_signal("completed", null)
+			completed.emit(null)
 			return
 
 		http.poll()
@@ -181,7 +181,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 			HTTPClient.STATUS_CONNECTION_ERROR,
 		]:
 			busy = false
-			emit_signal("completed", Result.new(-1))
+			completed.emit(Result.new(-1))
 			return
 
 		if status in [
@@ -217,7 +217,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 		if  file == null:
 			push_warning("strange quitting because file not found")
 			busy = false
-			emit_signal("completed", Result.new(-1))
+			completed.emit(Result.new(-1))
 			return
 
 	var last_yield = Time.get_ticks_msec()
@@ -228,7 +228,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 		if file:
 			file.store_buffer(chunk)
 			bytes += chunk.size()
-			emit_signal("download_progressed", bytes, total_bytes)
+			download_progressed.emit(bytes, total_bytes)
 		else:
 			response_body = response_body if response_body else ""
 			response_body += chunk.get_string_from_utf8()
@@ -251,7 +251,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 					file.close()
 				canceled = false
 				busy = false
-				emit_signal("completed", null)
+				completed.emit(null)
 				return
 
 		http.poll()
@@ -263,7 +263,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 			if file:
 				file.close()
 			busy = false
-			emit_signal("completed", Result.new(-1))
+			completed.emit(Result.new(-1))
 			return
 
 	await Engine.get_main_loop().process_frame
@@ -281,7 +281,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 			file.close()
 		canceled = false
 		busy = false
-		emit_signal("completed", null)
+		completed.emit(null)
 		return
 
 	busy = false
@@ -302,7 +302,7 @@ func request(path, payload = null, options = DEFAULT_OPTIONS):
 		var test_json_conv = JSON.new()
 		test_json_conv.parse(response_body) if response_body else null
 		data = test_json_conv.get_data()
-	emit_signal("completed", Result.new(response_code, data))
+	completed.emit(Result.new(response_code, data))
 
 func _get_option(options, key):
 	return options[key] if options.has(key) else DEFAULT_OPTIONS[key]

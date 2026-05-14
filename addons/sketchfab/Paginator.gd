@@ -6,11 +6,11 @@ var ResultItem = load("res://addons/sketchfab/ResultItem.tscn")
 
 var api = preload("res://addons/sketchfab/Api.gd").new()
 
-@onready var grid = find_child("ResultsGrid")
-@onready var trailer = find_child("Trailer")
-@onready var label = find_child("Label")
-@onready var cta_button = find_child("CTA")
-@onready var search_domain = find_child("SearchDomain")
+@onready var grid: GridContainer = %ResultsGrid
+@onready var trailer: VBoxContainer = %Trailer
+@onready var label: Label = %Label
+@onready var cta_button: Button = %CTA
+@onready var search_domain: OptionButton = %SearchDomain
 
 var next_page_url
 

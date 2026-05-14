@@ -8,8 +8,6 @@ var main
 
 func _enter_tree():
 	main = Main.instantiate()
-	get_tree().set_meta("__editor_scale", EditorInterface.get_editor_scale())
-	get_tree().set_meta("__editor_interface", EditorInterface)
 	get_tree().set_meta("__http_image_count", 0)
 	get_editor_interface().get_editor_main_screen().add_child(main)
 	main.visible = false

@@ -6,9 +6,9 @@ const Utils = preload("res://addons/sketchfab/Utils.gd")
 
 const ModelDialog = preload("res://addons/sketchfab/ModelDialog.tscn")
 
-@onready var user_name = find_child("UserName")
-@onready var model_name = find_child("ModelName")
-@onready var image = find_child("Image")
+@onready var user_name: Label = %UserName
+@onready var model_name: Label = %ModelName
+@onready var image: TextureRect = %Image
 
 var data
 

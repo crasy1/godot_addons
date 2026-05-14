@@ -48,6 +48,7 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 0
 
 [node name="Image" type="TextureRect" parent="_/_"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(2.08165e-12, 256)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -68,6 +69,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ModelName" type="Label" parent="_/_2/_"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 2.08165e-12)
 layout_mode = 2
 size_flags_vertical = 1
@@ -76,6 +78,7 @@ autowrap_mode = 3
 max_lines_visible = 2
 
 [node name="UserName" type="Label" parent="_/_2/_"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.501961)
 custom_minimum_size = Vector2(256, 2.08165e-12)
 layout_mode = 2

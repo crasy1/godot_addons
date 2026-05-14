@@ -34,27 +34,27 @@ const Utils = preload("res://addons/sketchfab/Utils.gd")
 const Api = preload("res://addons/sketchfab/Api.gd")
 var api = Api.new()
 
-@onready var search_text = find_child("Search").find_child("Text")
-@onready var search_categories = find_child("Search").find_child("Categories")
-@onready var search_animated = find_child("Search").find_child("Animated")
-@onready var search_staff_picked = find_child("Search").find_child("StaffPicked")
-@onready var search_face_count:OptionButton = find_child("Search").find_child("FaceCount")
-@onready var search_sort_by :OptionButton= find_child("Search").find_child("SortBy")
-@onready var search_domain:OptionButton = find_child("Search").find_child("SearchDomain")
-@onready var cta_button = find_child("CTA")
-@onready var trailer = find_child("Trailer")
+@onready var search_text: LineEdit = %Text
+@onready var search_categories: MenuButton = %Categories
+@onready var search_animated: CheckBox = %Animated
+@onready var search_staff_picked: CheckBox = %StaffPicked
+@onready var search_face_count: OptionButton = %FaceCount
+@onready var search_sort_by: OptionButton = %SortBy
+@onready var search_domain: OptionButton = %SearchDomain
+@onready var cta_button: Button = %CTA
+@onready var trailer: VBoxContainer = %Trailer
 
-@onready var paginator = find_child("Paginator")
+@onready var paginator: ScrollContainer = %Paginator
 
-@onready var not_logged = find_child("NotLogged")
-@onready var login_name = not_logged.find_child("UserName")
-@onready var login_password = not_logged.find_child("Password")
-@onready var login_button = not_logged.find_child("Login")
+@onready var not_logged: HBoxContainer = %NotLogged
+@onready var login_name: LineEdit = %LoginName
+@onready var login_password: LineEdit = %Password
+@onready var login_button: Button = %Login
 
-@onready var logged = find_child("Logged")
-@onready var logged_name = logged.find_child("UserName")
-@onready var logged_plan = logged.find_child("Plan")
-@onready var logged_avatar = logged.find_child("Avatar")
+@onready var logged: VBoxContainer = %Logged
+@onready var logged_name: Label = %DisplayName
+@onready var logged_plan: Label = %Plan
+@onready var logged_avatar: TextureRect = %Avatar
 
 var cfg
 var can_search
@@ -66,10 +66,10 @@ func _enter_tree():
 
 
 func _ready():
-	var editor_scale = get_tree().get_meta("__editor_scale")
+	var editor_scale = EditorInterface.get_editor_scale()
 	logged_avatar.custom_minimum_size *= editor_scale
 	not_logged.custom_minimum_size *= editor_scale
-	logged.find_child("MainBlock").custom_minimum_size *= editor_scale
+	%MainBlock.custom_minimum_size *= editor_scale
 
 func _exit_tree():
 	cfg.save(CONFIG_FILE_PATH)

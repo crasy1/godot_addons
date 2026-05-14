@@ -48,6 +48,7 @@ size_flags_horizontal = 3
 stretch_mode = 5
 
 [node name="Logged" type="VBoxContainer" parent="Header/_" unique_id=891625225]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -57,6 +58,7 @@ size_flags_stretch_ratio = 10.0
 layout_mode = 2
 
 [node name="Avatar" type="TextureRect" parent="Header/_/Logged/_" unique_id=427883044]
+unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("ImageTexture_pbw4b")
 expand_mode = 3
@@ -65,6 +67,7 @@ script = ExtResource("2")
 max_size = 0.0
 
 [node name="MainBlock" type="HBoxContainer" parent="Header/_/Logged/_" unique_id=575901205]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -75,13 +78,15 @@ size_flags_horizontal = 6
 text = "Logged in as"
 horizontal_alignment = 2
 
-[node name="UserName" type="Label" parent="Header/_/Logged/_/MainBlock" unique_id=349986400]
+[node name="DisplayName" type="Label" parent="Header/_/Logged/_/MainBlock" unique_id=349986400]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 text = "User: yejoyyyy"
 horizontal_alignment = 2
 
 [node name="Plan" type="Label" parent="Header/_/Logged/_/MainBlock" unique_id=1303158469]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 6
@@ -93,6 +98,7 @@ size_flags_horizontal = 6
 text = "Logout"
 
 [node name="NotLogged" type="HBoxContainer" parent="Header/_" unique_id=1407333701]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -104,7 +110,8 @@ visible = false
 layout_mode = 2
 text = "You're not logged in"
 
-[node name="UserName" type="LineEdit" parent="Header/_/NotLogged" unique_id=184547527]
+[node name="LoginName" type="LineEdit" parent="Header/_/NotLogged" unique_id=184547527]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 0
@@ -112,6 +119,7 @@ text = "yejoyyyy"
 placeholder_text = "User"
 
 [node name="Password" type="LineEdit" parent="Header/_/NotLogged" unique_id=149966029]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 0
@@ -119,11 +127,13 @@ placeholder_text = "Password"
 secret = true
 
 [node name="Login" type="Button" parent="Header/_/NotLogged" unique_id=1226581325]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Login"
 
 [node name="Search" type="MarginContainer" parent="." unique_id=209382485]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
 
@@ -141,6 +151,7 @@ layout_mode = 2
 text = "Search:"
 
 [node name="SearchDomain" type="OptionButton" parent="Search/_/_" unique_id=375544880]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 toggle_mode = false
@@ -155,6 +166,7 @@ popup/item_2/id = 2
 metadata/__suffix = "/search?type=models&downloadable=true"
 
 [node name="Text" type="LineEdit" parent="Search/_/_" unique_id=974039276]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -182,6 +194,7 @@ layout_mode = 2
 text = "Categories"
 
 [node name="Categories" type="MenuButton" parent="Search/_/_3/_/_3" unique_id=1330281013]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -269,6 +282,7 @@ popup/item_18/id = 18
 metadata/__slugs = []
 
 [node name="Animated" type="CheckBox" parent="Search/_/_3/_" unique_id=1353233318]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -276,6 +290,7 @@ size_flags_stretch_ratio = 0.75
 text = "Animated"
 
 [node name="StaffPicked" type="CheckBox" parent="Search/_/_3/_" unique_id=668156811]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -292,6 +307,7 @@ layout_mode = 2
 text = "Sort by"
 
 [node name="SortBy" type="OptionButton" parent="Search/_/_3/_/_" unique_id=1947308430]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -319,6 +335,7 @@ layout_mode = 2
 text = "Face count"
 
 [node name="FaceCount" type="OptionButton" parent="Search/_/_3/_/_2" unique_id=1629438593]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -346,6 +363,7 @@ size_flags_vertical = 3
 mouse_filter = 0
 
 [node name="Paginator" type="ScrollContainer" parent="_2" unique_id=134770455]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -357,27 +375,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ResultsGrid" type="GridContainer" parent="_2/Paginator/_" unique_id=1605091807]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
 
 [node name="Trailer" type="VBoxContainer" parent="_2/Paginator/_" unique_id=464233779]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="_2/Paginator/_/Trailer" unique_id=608679277]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Fetching..."
 
 [node name="CTA" type="Button" parent="_2/Paginator/_/Trailer" unique_id=1730490360]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Upgrade to PRO"
 
 [connection signal="pressed" from="Header/_/Logged/_/MainBlock/Logout" to="." method="_on_Logout_pressed"]
-[connection signal="text_changed" from="Header/_/NotLogged/UserName" to="." method="_on_any_login_text_changed"]
+[connection signal="text_changed" from="Header/_/NotLogged/LoginName" to="." method="_on_any_login_text_changed"]
 [connection signal="text_changed" from="Header/_/NotLogged/Password" to="." method="_on_any_login_text_changed"]
 [connection signal="pressed" from="Header/_/NotLogged/Login" to="." method="_on_Login_pressed"]
 [connection signal="item_selected" from="Search/_/_/SearchDomain" to="." method="_on_SearchDomain_item_selected"]
