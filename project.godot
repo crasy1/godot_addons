@@ -20,7 +20,7 @@ project/assembly_name="godot_addons"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/PolyHavenImport/plugin.cfg")
+enabled=PackedStringArray("res://addons/PolyHavenImport/plugin.cfg", "res://addons/sketchfab/plugin.cfg")
 
 [physics]
 
