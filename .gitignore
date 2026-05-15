@@ -6,3 +6,5 @@ assets/
 /sketchfab/
 .omc/
 .claude/
+addons/godot_mcp/
+CLAUDE.md
