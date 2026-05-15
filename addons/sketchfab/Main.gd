@@ -2,6 +2,15 @@
 extends Control
 
 const CONFIG_FILE_PATH = "user://sketchfab.ini"
+const ASSETS_PATH_SETTING = "sketchfab/assets_path"
+
+
+func _get_assets_path() -> String:
+	if ProjectSettings.has_setting(ASSETS_PATH_SETTING):
+		var path: String = ProjectSettings.get_setting(ASSETS_PATH_SETTING)
+		if not path.is_empty():
+			return path
+	return "res://assets/sketchfab"
 
 const FACE_COUNT_OPTIONS = [
 	# Label, face_count, max_face_count
@@ -371,9 +380,10 @@ func start_download(uid: String, download_url: String, download_size: int, model
 	var file_regex = RegEx.new()
 	file_regex.compile("[^/]+?\\.zip")
 	var filename = file_regex.search(download_url).get_string()
-	var zip_path = "res://sketchfab/%s" % filename
+	var assets_path := _get_assets_path()
+	var zip_path = "%s/%s" % [assets_path, filename]
 
-	DirAccess.make_dir_absolute("res://sketchfab")
+	DirAccess.make_dir_recursive_absolute(assets_path)
 
 	var downloader = Requestor.new(host)
 
@@ -485,7 +495,7 @@ func _on_unzip_done(uid: String) -> void:
 		task.thread = null
 
 	var base_name = task.filename.get_basename()
-	task.imported_path = "res://sketchfab/%s" % base_name
+	task.imported_path = "%s/%s" % [_get_assets_path(), base_name]
 	task.status = "done"
 
 	EditorInterface.get_resource_filesystem().scan()
@@ -514,3 +524,36 @@ func get_download_status(uid: String) -> Dictionary:
 func is_downloading(uid: String) -> bool:
 	var task = _downloads.get(uid)
 	return task != null and (task.status == "downloading" or task.status == "unpacking")
+
+
+func _on_setting_btn_pressed():
+	var base = EditorInterface.get_base_control()
+	var project_settings_editor = base.find_child("*ProjectSettingsEditor*", true, false)
+	if not project_settings_editor:
+		# Fallback: open project settings directly
+		EditorInterface.get_base_control().find_child("*ProjectSettingsEditor*", true, false)
+		return
+
+	var tab_container:TabContainer = project_settings_editor.find_child("*TabContainer*", true, false)
+	if not tab_container:
+		project_settings_editor.popup()
+		return
+
+	# Find the General tab
+	var general_tab:Control
+	for i in range(tab_container.get_tab_count()):
+		if "General" in tab_container.get_tab_title(i) or "general" in tab_container.get_tab_title(i).to_lower():
+			general_tab = tab_container.get_tab_control(i)
+			break
+
+	if not general_tab:
+		project_settings_editor.popup()
+		return
+
+	var search_field:LineEdit = general_tab.find_child("*LineEdit*", true, false)
+	project_settings_editor.popup()
+	if tab_container and general_tab:
+		tab_container.set_current_tab(tab_container.get_tab_idx_from_control(general_tab))
+	if search_field:
+		search_field.text = "sketchfab"
+		search_field.text_changed.emit("sketchfab")

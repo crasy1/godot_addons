@@ -61,7 +61,6 @@ stretch_mode = 5
 
 [node name="Logged" type="VBoxContainer" parent="VBoxContainer/Header/_" unique_id=891625225]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -110,6 +109,10 @@ layout_mode = 2
 size_flags_horizontal = 6
 text = "Logout"
 
+[node name="SettingBtn" type="Button" parent="VBoxContainer/Header/_/Logged/_" unique_id=361774387]
+layout_mode = 2
+text = "Setting"
+
 [node name="NotLogged" type="HBoxContainer" parent="VBoxContainer/Header/_" unique_id=1407333701]
 unique_name_in_owner = true
 visible = false
@@ -130,7 +133,6 @@ size_flags_horizontal = 3
 mouse_default_cursor_shape = 0
 text = "yejoyyyy"
 placeholder_text = "User"
-editable = false
 
 [node name="Password" type="LineEdit" parent="VBoxContainer/Header/_/NotLogged" unique_id=149966029]
 unique_name_in_owner = true
@@ -138,7 +140,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 0
 placeholder_text = "Password"
-editable = false
 secret = true
 
 [node name="Login" type="Button" parent="VBoxContainer/Header/_/NotLogged" unique_id=1226581325]
@@ -217,10 +218,83 @@ focus_mode = 2
 toggle_mode = false
 text = "All"
 flat = false
-item_count = 1
+item_count = 19
 popup/item_0/text = "All"
 popup/item_0/checkable = 1
+popup/item_0/checked = true
 popup/item_0/id = 0
+popup/item_1/text = "Animals & Pets"
+popup/item_1/checkable = 1
+popup/item_1/checked = true
+popup/item_1/id = 1
+popup/item_2/text = "Architecture"
+popup/item_2/checkable = 1
+popup/item_2/checked = true
+popup/item_2/id = 2
+popup/item_3/text = "Art & Abstract"
+popup/item_3/checkable = 1
+popup/item_3/checked = true
+popup/item_3/id = 3
+popup/item_4/text = "Cars & Vehicles"
+popup/item_4/checkable = 1
+popup/item_4/checked = true
+popup/item_4/id = 4
+popup/item_5/text = "Characters & Creatures"
+popup/item_5/checkable = 1
+popup/item_5/checked = true
+popup/item_5/id = 5
+popup/item_6/text = "Cultural Heritage & History"
+popup/item_6/checkable = 1
+popup/item_6/checked = true
+popup/item_6/id = 6
+popup/item_7/text = "Electronics & Gadgets"
+popup/item_7/checkable = 1
+popup/item_7/checked = true
+popup/item_7/id = 7
+popup/item_8/text = "Fashion & Style"
+popup/item_8/checkable = 1
+popup/item_8/checked = true
+popup/item_8/id = 8
+popup/item_9/text = "Food & Drink"
+popup/item_9/checkable = 1
+popup/item_9/checked = true
+popup/item_9/id = 9
+popup/item_10/text = "Furniture & Home"
+popup/item_10/checkable = 1
+popup/item_10/checked = true
+popup/item_10/id = 10
+popup/item_11/text = "Music"
+popup/item_11/checkable = 1
+popup/item_11/checked = true
+popup/item_11/id = 11
+popup/item_12/text = "Nature & Plants"
+popup/item_12/checkable = 1
+popup/item_12/checked = true
+popup/item_12/id = 12
+popup/item_13/text = "News & Politics"
+popup/item_13/checkable = 1
+popup/item_13/checked = true
+popup/item_13/id = 13
+popup/item_14/text = "People"
+popup/item_14/checkable = 1
+popup/item_14/checked = true
+popup/item_14/id = 14
+popup/item_15/text = "Places & Travel"
+popup/item_15/checkable = 1
+popup/item_15/checked = true
+popup/item_15/id = 15
+popup/item_16/text = "Science & Technology"
+popup/item_16/checkable = 1
+popup/item_16/checked = true
+popup/item_16/id = 16
+popup/item_17/text = "Sports & Fitness"
+popup/item_17/checkable = 1
+popup/item_17/checked = true
+popup/item_17/id = 17
+popup/item_18/text = "Weapons & Military"
+popup/item_18/checkable = 1
+popup/item_18/checked = true
+popup/item_18/id = 18
 metadata/__slugs = []
 
 [node name="Animated" type="CheckBox" parent="VBoxContainer/Search/_/_3/_" unique_id=1353233318]
@@ -324,7 +398,6 @@ columns = 6
 
 [node name="Trailer" type="VBoxContainer" parent="VBoxContainer/_2/Paginator/_" unique_id=464233779]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -347,6 +420,7 @@ visible = false
 layout_mode = 1
 
 [connection signal="pressed" from="VBoxContainer/Header/_/Logged/_/MainBlock/Logout" to="." method="_on_Logout_pressed"]
+[connection signal="pressed" from="VBoxContainer/Header/_/Logged/_/SettingBtn" to="." method="_on_setting_btn_pressed"]
 [connection signal="text_changed" from="VBoxContainer/Header/_/NotLogged/LoginName" to="." method="_on_any_login_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/Header/_/NotLogged/Password" to="." method="_on_any_login_text_changed"]
 [connection signal="pressed" from="VBoxContainer/Header/_/NotLogged/Login" to="." method="_on_Login_pressed"]

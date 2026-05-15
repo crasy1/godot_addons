@@ -9,9 +9,9 @@ func _enter_tree():
 	
 	## Project Menu settings
 	for setting in [
-		["poly_haven_import/hdris_path", "res://assets/HDRIs", PROPERTY_HINT_DIR],
-		["poly_haven_import/textures_path", "res://assets/textures", PROPERTY_HINT_DIR],
-		["poly_haven_import/models_path", "res://assets/models", PROPERTY_HINT_DIR],
+		["poly_haven_import/hdris_path", "res://assets/poly_haven/HDRIs", PROPERTY_HINT_DIR],
+		["poly_haven_import/textures_path", "res://assets/poly_haven/textures", PROPERTY_HINT_DIR],
+		["poly_haven_import/models_path", "res://assets/poly_haven/models", PROPERTY_HINT_DIR],
 		
 		["poly_haven_import/make_materials_triplanar", false, PROPERTY_HINT_NONE],
 	]:

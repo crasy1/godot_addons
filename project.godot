@@ -29,3 +29,7 @@ enabled=PackedStringArray("res://addons/PolyHavenImport/plugin.cfg", "res://addo
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[sketchfab]
+
+assets_path="res://assets"
