@@ -57,6 +57,14 @@ mouse_filter = 2
 stretch_mode = 5
 script = ExtResource("2")
 
+[node name="DownloadProgress" type="ProgressBar" parent="_"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+show_percentage = false
+
 [node name="_2" type="MarginContainer" parent="_"]
 layout_mode = 2
 mouse_filter = 2

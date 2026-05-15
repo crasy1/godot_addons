@@ -4,33 +4,72 @@
 [ext_resource type="Texture2D" uid="uid://ch8qwtfurv7oq" path="res://addons/sketchfab/icon.png" id="2_tnc8c"]
 [ext_resource type="Script" uid="uid://c4rhbdiehm2b1" path="res://addons/sketchfab/HttpImage.gd" id="3_n3nr0"]
 
-[node name="ModelDialog" type="Window" unique_id=1485071416]
-oversampling_override = 1.0
-position = Vector2i(0, 36)
-transient = true
-unresizable = true
-popup_window = true
-script = ExtResource("1")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahbub"]
+bg_color = Color(0, 0, 0, 1)
 
-[node name="All" type="ScrollContainer" parent="." unique_id=17363592]
-unique_name_in_owner = true
-visible = false
+[node name="ModelDialog" type="Control" unique_id=1434069063]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 420.0
-offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1346711263]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18431373, 0.18431373, 0.18431373, 0.3764706)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1713579617]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -300.0
+offset_right = 260.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ahbub")
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=792388820]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel/VBox" unique_id=1887059886]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/VBox/Header" unique_id=1023949801]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Model"
+
+[node name="Close" type="Button" parent="Panel/VBox/Header" unique_id=753217531]
+layout_mode = 2
+text = "X"
+
+[node name="All" type="ScrollContainer" parent="Panel/VBox" unique_id=684004680]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="All" unique_id=706187311]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBox/All" unique_id=913737054]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="_" type="MarginContainer" parent="All/VBoxContainer" unique_id=532532737]
+[node name="_" type="MarginContainer" parent="Panel/VBox/All/VBoxContainer" unique_id=1541935265]
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/margin_left = 8
@@ -38,20 +77,20 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 12
 
-[node name="_" type="VBoxContainer" parent="All/VBoxContainer/_" unique_id=914661432]
+[node name="_" type="VBoxContainer" parent="Panel/VBox/All/VBoxContainer/_" unique_id=48273103]
 layout_mode = 2
 
-[node name="Model" type="Label" parent="All/VBoxContainer/_/_" unique_id=1220187175]
+[node name="Model" type="Label" parent="Panel/VBox/All/VBoxContainer/_/_" unique_id=1312772651]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Model"
 max_lines_visible = 1
 
-[node name="_" type="HBoxContainer" parent="All/VBoxContainer/_/_" unique_id=1033391150]
+[node name="_" type="HBoxContainer" parent="Panel/VBox/All/VBoxContainer/_/_" unique_id=797723396]
 layout_mode = 2
 
-[node name="User" type="Label" parent="All/VBoxContainer/_/_/_" unique_id=1423073755]
+[node name="User" type="Label" parent="Panel/VBox/All/VBoxContainer/_/_/_" unique_id=1742126625]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.752941)
 layout_mode = 2
@@ -60,13 +99,13 @@ size_flags_stretch_ratio = 2.0
 text = "User"
 max_lines_visible = 1
 
-[node name="ViewOnSite" type="Button" parent="All/VBoxContainer/_/_/_" unique_id=997506167]
+[node name="ViewOnSite" type="Button" parent="Panel/VBox/All/VBoxContainer/_/_/_" unique_id=1591871669]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "View on Sketchfab"
 
-[node name="Image" type="TextureRect" parent="All/VBoxContainer" unique_id=2104998779]
+[node name="Image" type="TextureRect" parent="Panel/VBox/All/VBoxContainer" unique_id=421555925]
 unique_name_in_owner = true
 clip_contents = true
 custom_minimum_size = Vector2(512, 2.08165e-12)
@@ -78,7 +117,7 @@ max_size = 1024
 background = Color(0, 0, 0, 0.752941)
 immediate = true
 
-[node name="_2" type="MarginContainer" parent="All/VBoxContainer" unique_id=381397153]
+[node name="_2" type="MarginContainer" parent="Panel/VBox/All/VBoxContainer" unique_id=1234870393]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
@@ -87,26 +126,24 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
-[node name="Download" type="Button" parent="All/VBoxContainer/_2" unique_id=690959383]
+[node name="Download" type="Button" parent="Panel/VBox/All/VBoxContainer/_2" unique_id=105851418]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 clip_text = true
 
-[node name="ProgressBar" type="ProgressBar" parent="All/VBoxContainer/_2" unique_id=2063948520]
+[node name="ProgressBar" type="ProgressBar" parent="Panel/VBox/All/VBoxContainer/_2" unique_id=1743668596]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 step = 1.0
 
-[node name="Size" type="Label" parent="All/VBoxContainer/_2" unique_id=1044975077]
+[node name="Size" type="Label" parent="Panel/VBox/All/VBoxContainer/_2" unique_id=864064249]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="_3" type="MarginContainer" parent="All/VBoxContainer" unique_id=90432450]
+[node name="_3" type="MarginContainer" parent="Panel/VBox/All/VBoxContainer" unique_id=585279437]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
@@ -115,27 +152,27 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 0
 
-[node name="_" type="GridContainer" parent="All/VBoxContainer/_3" unique_id=1957327611]
+[node name="_" type="GridContainer" parent="Panel/VBox/All/VBoxContainer/_3" unique_id=469092514]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/v_separation = 12
 columns = 2
 
-[node name="_" type="Label" parent="All/VBoxContainer/_3/_" unique_id=583055702]
+[node name="_" type="Label" parent="Panel/VBox/All/VBoxContainer/_3/_" unique_id=1280019188]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Model information"
 uppercase = true
 
-[node name="_2" type="Label" parent="All/VBoxContainer/_3/_" unique_id=1730593605]
+[node name="_2" type="Label" parent="Panel/VBox/All/VBoxContainer/_3/_" unique_id=391842598]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "License"
 uppercase = true
 
-[node name="Info" type="Label" parent="All/VBoxContainer/_3/_" unique_id=845699158]
+[node name="Info" type="Label" parent="Panel/VBox/All/VBoxContainer/_3/_" unique_id=744598902]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.752941)
 layout_mode = 2
@@ -145,7 +182,7 @@ text = "Info
 Info
 Info"
 
-[node name="License" type="Label" parent="All/VBoxContainer/_3/_" unique_id=1933222582]
+[node name="License" type="Label" parent="Panel/VBox/All/VBoxContainer/_3/_" unique_id=1347856241]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.752941)
 layout_mode = 2
@@ -159,6 +196,7 @@ License
 License"
 clip_text = true
 
-[connection signal="about_to_popup" from="." to="." method="_on_about_to_show"]
-[connection signal="pressed" from="All/VBoxContainer/_/_/_/ViewOnSite" to="." method="_on_ViewOnSite_pressed"]
-[connection signal="pressed" from="All/VBoxContainer/_2/Download" to="." method="_on_Download_pressed"]
+[connection signal="gui_input" from="Dimmer" to="." method="_on_dimmer_input"]
+[connection signal="pressed" from="Panel/VBox/Header/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="Panel/VBox/All/VBoxContainer/_/_/_/ViewOnSite" to="." method="_on_ViewOnSite_pressed"]
+[connection signal="pressed" from="Panel/VBox/All/VBoxContainer/_2/Download" to="." method="_on_Download_pressed"]

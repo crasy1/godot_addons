@@ -4,6 +4,8 @@ extends ScrollContainer
 const SafeData = preload("res://addons/sketchfab/SafeData.gd")
 var ResultItem = load("res://addons/sketchfab/ResultItem.tscn")
 
+signal item_selected(data: Dictionary, item: MarginContainer)
+
 var api = preload("res://addons/sketchfab/Api.gd").new()
 
 @onready var grid: GridContainer = %ResultsGrid
@@ -93,9 +95,13 @@ func _process_page(result_data):
 	for result in results:
 		var item = ResultItem.instantiate()
 		item.set_data(result)
+		item.item_clicked.connect(_on_item_clicked.bind(item))
 		grid.add_child(item)
 
 	# Set next page now we know the current one succeeded
 	next_page_url = SafeData.string(result_data, "next")
 
 	return results.size()
+
+func _on_item_clicked(data, item):
+	item_selected.emit(data, item)

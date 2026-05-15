@@ -32,6 +32,7 @@ const DEFAULT_DOMAIN = 0
 const SafeData = preload("res://addons/sketchfab/SafeData.gd")
 const Utils = preload("res://addons/sketchfab/Utils.gd")
 const Api = preload("res://addons/sketchfab/Api.gd")
+const ModelDialogScene = preload("res://addons/sketchfab/ModelDialog.tscn")
 var api = Api.new()
 
 @onready var search_text: LineEdit = %Text
@@ -56,6 +57,8 @@ var api = Api.new()
 @onready var logged_plan: Label = %Plan
 @onready var logged_avatar: TextureRect = %Avatar
 
+@onready var model_dialog: Control = %ModelDialog
+
 var cfg
 var can_search
 var must_start_up = true
@@ -70,6 +73,8 @@ func _ready():
 	logged_avatar.custom_minimum_size *= editor_scale
 	not_logged.custom_minimum_size *= editor_scale
 	%MainBlock.custom_minimum_size *= editor_scale
+
+	paginator.item_selected.connect(_on_item_selected)
 
 func _exit_tree():
 	cfg.save(CONFIG_FILE_PATH)
@@ -163,6 +168,9 @@ func _on_SearchButton_pressed():
 
 func _on_SearchText_text_entered(new_text):
 	_search()
+
+func _on_item_selected(data, item):
+	model_dialog.show_for_uid(SafeData.string(data, "uid"), item)
 
 ##### Actions
 

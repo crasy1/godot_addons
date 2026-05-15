@@ -56,9 +56,9 @@ func _main_screen_changed(screen_name: String):
 		if _instance == null:
 			_on_scene_change_requested("res://addons/PolyHavenImport/browse.tscn")
 		else:
-			get_editor_interface().get_editor_main_screen().add_child(_instance)
+			EditorInterface.get_editor_main_screen().add_child(_instance)
 	else:
-		get_editor_interface().get_editor_main_screen().remove_child(_instance)
+		EditorInterface.get_editor_main_screen().remove_child(_instance)
 
 
 func _on_scene_change_requested(scene: String):
@@ -68,4 +68,4 @@ func _on_scene_change_requested(scene: String):
 	
 	_instance = load(scene).instantiate()
 	_instance.scene_change_requested.connect(_on_scene_change_requested)
-	get_editor_interface().get_editor_main_screen().add_child(_instance)
+	EditorInterface.get_editor_main_screen().add_child(_instance)

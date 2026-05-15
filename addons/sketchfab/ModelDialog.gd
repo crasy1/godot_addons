@@ -1,5 +1,5 @@
 @tool
-extends Window
+extends Control
 
 const SafeData = preload("res://addons/sketchfab/SafeData.gd")
 const Utils = preload("res://addons/sketchfab/Utils.gd")
@@ -25,46 +25,69 @@ var imported_path
 var view_url
 var download_url
 var download_size
-
-func set_uid(uid):
-	self.uid = uid
+var source_item
 
 func _ready():
 	%All.visible = false
 
-func _on_about_to_show():
+func show_for_uid(uid, source_item):
+	self.uid = uid
+	self.source_item = source_item
+	show()
+	%All.visible = false
+	_setup()
+
+func close():
+	hide()
+	if is_instance_valid(source_item):
+		source_item.hide_download_progress()
+	if downloader:
+		downloader.term()
+		downloader = null
+	source_item = null
+
+func _on_dimmer_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		close()
+
+func _on_close_pressed():
+	close()
+
+func _setup():
 	if !uid:
-		hide()
+		close()
 		return
 
-	# Setup download button
+	imported_path = null
+	download.disabled = false
+	download.text = "Download"
+	progress.visible = false
+	size_label.visible = false
 
 	if Api.get_token():
-		# Request download link
-
 		var result = await api.request_download(uid)
 		if !get_tree():
 			return
 
 		if typeof(result) == TYPE_INT && result == Api.SymbolicErrors.NOT_AUTHORIZED:
 			OS.alert("Your session may have expired. Please log in again.", "Not authorized")
-			hide()
+			close()
 			return
 
 		if typeof(result) != TYPE_DICTIONARY:
-			hide()
+			close()
 			return
-		print("[assets data]",result)
+
 		var gtlf = SafeData.dictionary(result, "gltf")
 		if !gtlf.size():
 			OS.alert("This model has not a glTF version.", "Sorry")
-			hide()
+			close()
 			return
 
 		download_url = SafeData.string(gtlf, "url")
 		download_size = SafeData.integer(gtlf, "size")
 		if !download_url:
-			hide()
+			close()
 			return
 
 		download.text = "Download (%.1f MiB)" % [download_size / (1024 * 1024)]
@@ -72,11 +95,9 @@ func _on_about_to_show():
 		download.text = "To download models you need to be logged in."
 		download.disabled = true
 
-	# Populate other information
-
 	var data = await api.get_model_detail(uid)
 	if typeof(data) != TYPE_DICTIONARY:
-		hide()
+		close()
 		return
 
 	label_model.text = SafeData.string(data, "name")
@@ -88,8 +109,7 @@ func _on_about_to_show():
 
 	var thumbnails = SafeData.dictionary(data, "thumbnails")
 	var images = SafeData.array(thumbnails, "images")
-	image.max_size = size.x
-	%All.size = size
+	image.max_size = 440
 	image.url = Utils.get_best_size_url(images, image.max_size, SafeData)
 
 	var vc = SafeData.integer(data, "vertexCount")
@@ -105,7 +125,7 @@ func _on_about_to_show():
 		]
 
 	var license_data = SafeData.dictionary(data, "license")
-	
+
 	license.text = "%s\n(%s)" % [
 		SafeData.string(license_data, "fullName"),
 		SafeData.string(license_data, "requirements"),
@@ -115,7 +135,7 @@ func _on_about_to_show():
 func _on_Download_pressed():
 	if imported_path:
 		EditorInterface.open_scene_from_path(imported_path)
-		hide()
+		close()
 		return
 
 	# Download file
@@ -154,6 +174,8 @@ func _on_Download_pressed():
 		download.visible = true
 		progress.visible = false
 		size_label.visible = false
+		if is_instance_valid(source_item):
+			source_item.hide_download_progress()
 		OS.alert(
 			"Please check your network connectivity, free disk space and try again.",
 			"Download error")
@@ -193,11 +215,15 @@ func _on_Download_pressed():
 	size_label.visible = false
 	download.visible = true
 	download.text = "OPEN IMPORTED MODEL"
+	if is_instance_valid(source_item):
+		source_item.show_open_button(imported_path)
 
 func _on_download_progressed(bytes, total_bytes):
 	if !get_tree():
 		downloader.term()
 	progress.value = bytes
+	if is_instance_valid(source_item):
+		source_item.show_download_progress(bytes, total_bytes)
 
 func _on_ViewOnSite_pressed():
 	OS.shell_open(view_url)
