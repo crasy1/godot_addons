@@ -11,7 +11,9 @@ signal item_clicked(data: Dictionary)
 @onready var image: TextureRect = %Image
 @onready var download_progress: ProgressBar = %DownloadProgress
 
+var main: Control
 var data
+var uid
 var imported_path
 
 func set_data(data):
@@ -21,9 +23,9 @@ func set_data(data):
 func _ready():
 	if !data:
 		return
-
+		
 	model_name.text = SafeData.string(data, "name")
-
+	uid=SafeData.string(data, "uid")
 	var user = SafeData.dictionary(data, "user")
 	user_name.text = "by %s" % SafeData.string(user, "displayName")
 
@@ -33,8 +35,12 @@ func _ready():
 
 func _on_Button_pressed():
 	if imported_path:
-		EditorInterface.open_scene_from_path(imported_path)
-		return
+		if DirAccess.dir_exists_absolute(imported_path):
+			EditorInterface.get_file_system_dock().navigate_to_path(imported_path)
+			return
+		else:
+			imported_path=null
+			main._downloads.erase(uid)
 	item_clicked.emit(data)
 
 func show_download_progress(bytes, total_bytes):

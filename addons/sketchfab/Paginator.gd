@@ -13,7 +13,7 @@ var api = preload("res://addons/sketchfab/Api.gd").new()
 @onready var label: Label = %Label
 @onready var cta_button: Button = %CTA
 @onready var search_domain: OptionButton = %SearchDomain
-
+var main: Control
 var next_page_url
 
 func _ready():
@@ -95,6 +95,7 @@ func _process_page(result_data):
 	for result in results:
 		var item = ResultItem.instantiate()
 		item.set_data(result)
+		item.main=main
 		item.item_clicked.connect(_on_item_clicked.bind(item))
 		grid.add_child(item)
 

@@ -33,7 +33,15 @@ const SafeData = preload("res://addons/sketchfab/SafeData.gd")
 const Utils = preload("res://addons/sketchfab/Utils.gd")
 const Api = preload("res://addons/sketchfab/Api.gd")
 const ModelDialogScene = preload("res://addons/sketchfab/ModelDialog.tscn")
+const Requestor = preload("res://addons/sketchfab/Requestor.gd")
 var api = Api.new()
+
+# Download management
+var _downloads: Dictionary = {}
+
+signal download_progress(uid: String, bytes: int, total: int)
+signal download_completed(uid: String, imported_path: String)
+signal download_failed(uid: String)
 
 @onready var search_text: LineEdit = %Text
 @onready var search_categories: MenuButton = %Categories
@@ -75,8 +83,15 @@ func _ready():
 	%MainBlock.custom_minimum_size *= editor_scale
 
 	paginator.item_selected.connect(_on_item_selected)
+	paginator.main= self
+	model_dialog.set_main(self)
 
 func _exit_tree():
+	for uid in _downloads:
+		var task = _downloads[uid]
+		if task.downloader:
+			task.downloader.term()
+	_downloads.clear()
 	cfg.save(CONFIG_FILE_PATH)
 
 func _notification(what):
@@ -342,3 +357,160 @@ func _set_login_disabled(disabled):
 
 func _refresh_login_button():
 	login_button.disabled = !(login_name.text.length() > 0 && login_password.text.length() > 0)
+
+##### Download Management
+
+func start_download(uid: String, download_url: String, download_size: int, model_name: String):
+	if _downloads.has(uid):
+		return
+	var host_idx = download_url.find("//") + 2
+	var path_idx = download_url.find("/", host_idx)
+	var host = download_url.substr(host_idx, path_idx - host_idx)
+	var path = download_url.right(download_url.length() - path_idx)
+
+	var file_regex = RegEx.new()
+	file_regex.compile("[^/]+?\\.zip")
+	var filename = file_regex.search(download_url).get_string()
+	var zip_path = "res://sketchfab/%s" % filename
+
+	DirAccess.make_dir_absolute("res://sketchfab")
+
+	var downloader = Requestor.new(host)
+
+	_downloads[uid] = {
+		"downloader": downloader,
+		"zip_path": zip_path,
+		"filename": filename,
+		"model_name": model_name,
+		"download_size": download_size,
+		"status": "downloading",
+		"progress_bytes": 0,
+		"imported_path": "",
+		"thread": null,
+	}
+
+	downloader.download_progressed.connect(_on_download_progress.bind(uid))
+	downloader.request(path, null, { "download_to": zip_path })
+	_await_download_completion(uid)
+
+
+func _await_download_completion(uid: String):
+	var task = _downloads.get(uid)
+	if !task:
+		return
+	var downloader = task.downloader
+	var result = await downloader.completed
+	if !is_instance_valid(self):
+		return
+	if !result || !result.ok:
+		_downloads.erase(uid)
+		download_failed.emit(uid)
+		return
+
+	task.status = "unpacking"
+	task.downloader = null
+	downloader.term()
+
+	var thread = Thread.new()
+	task.thread = thread
+	thread.start(_do_unzip.bind(task.zip_path, uid))
+
+
+func _on_download_progress(bytes: int, total_bytes: int, uid: String):
+	var task = _downloads.get(uid)
+	if task:
+		task.progress_bytes = bytes
+	download_progress.emit(uid, bytes, total_bytes)
+
+
+func _do_unzip(zip_path: String, uid: String):
+	print("start unzip")
+	var zip := ZIPReader.new()
+	var err := zip.open(zip_path)
+	if err != OK:
+		_on_unzip_failed.call_deferred(uid)
+		return
+
+	var files := zip.get_files()
+	if files.is_empty():
+		zip.close()
+		_on_unzip_failed.call_deferred(uid)
+		return
+
+	var base_name := zip_path.get_file().get_basename()
+	var out_dir := zip_path.get_base_dir() + "/" + base_name + "/"
+	DirAccess.make_dir_recursive_absolute(out_dir)
+
+	var prefix := ""
+	for entry in files:
+		var slash_pos := entry.find("/")
+		if slash_pos < 0:
+			prefix = ""
+			break
+		var candidate := entry.left(slash_pos + 1)
+		if prefix.is_empty():
+			prefix = candidate
+		elif prefix != candidate:
+			prefix = ""
+			break
+
+	for path in files:
+		var extract_path := path
+		if not prefix.is_empty() and path.begins_with(prefix):
+			extract_path = path.substr(prefix.length())
+		if extract_path.is_empty() or extract_path.ends_with("/"):
+			if not extract_path.is_empty():
+				DirAccess.make_dir_recursive_absolute(out_dir + extract_path)
+			continue
+		var data := zip.read_file(path)
+		var full_path := out_dir + extract_path
+		DirAccess.make_dir_recursive_absolute(full_path.get_base_dir())
+		var out_file := FileAccess.open(full_path, FileAccess.WRITE)
+		if out_file:
+			out_file.store_buffer(data)
+			out_file.close()
+
+	zip.close()
+	DirAccess.remove_absolute(zip_path)
+	_on_unzip_done.call_deferred(uid)
+
+
+func _on_unzip_done(uid: String) -> void:
+	print("unzip done")
+	var task = _downloads.get(uid)
+	if !task:
+		return
+	if task.thread:
+		task.thread.wait_to_finish()
+		task.thread = null
+
+	var base_name = task.filename.get_basename()
+	task.imported_path = "res://sketchfab/%s" % base_name
+	task.status = "done"
+
+	EditorInterface.get_resource_filesystem().scan()
+	while EditorInterface.get_resource_filesystem().is_scanning():
+		await get_tree().process_frame
+
+	download_completed.emit(uid, task.imported_path)
+
+
+func _on_unzip_failed(uid: String):
+	print("unzip failed")
+	var task = _downloads.get(uid)
+	if !task:
+		return
+	if task.thread:
+		task.thread.wait_to_finish()
+		task.thread = null
+	_downloads.erase(uid)
+	download_failed.emit(uid)
+
+
+func get_download_status(uid: String) -> Dictionary:
+	return _downloads.get(uid, {})
+
+
+func is_downloading(uid: String) -> bool:
+	var task = _downloads.get(uid)
+	return task != null and (task.status == "downloading" or task.status == "unpacking")
